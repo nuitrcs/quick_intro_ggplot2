@@ -14,7 +14,7 @@ editor_options:
 knitr::opts_chunk$set(eval=TRUE, fig.width=5, fig.height=3.5)
 ```
 
-This is an [R Markdown](https://rmarkdown.rstudio.com/) document.  Follow the link to learn more about R Markdown and the notebook format used during the workshop.
+This is an [R Markdown](https://rmarkdown.rstudio.com/) document. Follow the link to learn more about R Markdown and the notebook format used during the workshop.
 
 The cheat sheet is very useful when working with ggplot2: https://www.rstudio.org/links/data_visualization_cheat_sheet
 
@@ -52,7 +52,9 @@ nh
 
 # Introductions
 
-Why ggplot?  For me, it makes exploring my data, especially groups in my data, much easier.  I can easily make some plots with ggplot that are difficult enough to make with base R graphics that I just won't do them routinely when exploring my data.  This is bad, because we should visualize our data!  I don't want the code to get in the way of that.  ggplot is a package where I recommend first learning the basic syntax, and then go back and learn some more about the theory behind the package -- what the logic is to how it works. It took me a few iterations of working with ggplot to get comfortable with it, and to understand how to think in a way that was compatible with how it approaches visualization.  But once I did, it made data visualization easier and more fun. 
+Why ggplot?  It makes exploring data, especially groups in data, much easier.  You can pretty easily make some plots with ggplot that are difficult enough to make with base R graphics that you probably won't do them routinely when exploring data.  This is bad, because we should visualize our data!  You don't want the code to get in the way of that.
+
+When it comes to ggplot, it's good to first learn the basic syntax, and then go back and learn some more about the theory behind the package -- what the logic is and how it works. It can take a few iterations of working with ggplot to get comfortable with it, and to understand how to think in a way that is compatible with how ggplot approaches visualization.  But once you get it, it makes data visualization easier and more fun. 
 
 The syntax of ggplot2 is a little bit different than other tidyverse packages, in part because it predates them.  But it does share a few things with other tidyverse packages, such as:
 
@@ -61,7 +63,7 @@ The syntax of ggplot2 is a little bit different than other tidyverse packages, i
 * It's easy to work with groups in your data
 * Instead of functions with lots of different arguments (although some of these functions do have a lot), you combine multiple function calls together to achieve what you want to do
 
-The package is called ggplot2 (there is no first version), the main function in the package is called ggplot, and "ggplot" generally refers to anything with the package (I and others often don't bother to say the 2 in the package name).  
+The package is called ggplot2 (there is no first version), the main function in the package is called ggplot, and "ggplot" generally refers to anything with the package (most people often don't bother to say the 2 in the package name).  
 
 # ggplot Basics
 
@@ -88,13 +90,12 @@ ggplot(penguins, aes(x = bill_length_mm,
 
 The warning message is telling you that two observations (rows) in your data frame are not plotted because there were missing values.  You can get this warning from explicit missing values or in cases where you set the limits of the axes in a way that excludes some data points.
 
-The first line alone (without the + at the end) makes a plot set up without adding the data:
+The first line alone (without the `+` at the end) makes a plot set up without adding the data:
 
 ```{r}
 ggplot(penguins, aes(x = bill_length_mm, 
                      y = bill_depth_mm))
 ```
-
 
 If we change the geom function we use, the plot type changes:
 
@@ -105,7 +106,6 @@ ggplot(penguins, aes(x = bill_length_mm,
 ```
 
 This is a density plot, where the color of each rectangle indicates how many observations (points on the above plot) fall in that area.
-
 
 ### EXERCISE 1
 
@@ -118,7 +118,7 @@ ggplot(___, aes(x = ___, y = ___)) +
 
 ## Different Plot Types
 
-The above plots used two continuous variables.  The [cheat sheet](https://www.rstudio.org/links/data_visualization_cheat_sheet) has the geoms organized by how many and what type of variables you want to plot.  For example, we can make a histogram, which is of a single variable:
+The above plots used two continuous variables.  The [cheat sheet](https://www.rstudio.org/links/data_visualization_cheat_sheet) has the `geoms` organized by how many and what type of variables you want to plot. (This is very useful!) For example, we can make a histogram, which is of a single variable:
 
 ```{r}
 ggplot(penguins, aes(x = bill_depth_mm)) + 
@@ -147,7 +147,6 @@ ggplot(nh, aes(x = year, y = temp)) +
   geom_smooth()
 ```
 
-
 ### EXERCISE 2
 
 Make a histogram (`geom_histogram()`) of the `temp` variable in the `nh` dataset. You can code here:
@@ -158,7 +157,7 @@ Make a histogram (`geom_histogram()`) of the `temp` variable in the `nh` dataset
 
 ## Other Aesthetics and Grouping
 
-We can set other aesthetics of the plot (color, fill, linetype, marker, etc.) according to variables in our data.  
+We can set other aesthetics of the plot (color, fill, linetype, marker, etc.) according to variables in our data. 
 
 Note that if you want a line or color for each group, those groups need to be defined by a categorical variable.  This is the opposite of how data usually needs to be structured when using base R plotting functions. If the values for the two groups are in separate columns in your dataset, you'll need to reshape your data to get them in a single column instead -- something covered in the tidyr session of these workshops.
 
@@ -180,17 +179,16 @@ ggplot(penguins, aes(x = bill_length_mm,
                      y = bill_depth_mm,
                      color = species)) +  
   geom_point() + 
-  geom_smooth(method="lm", se=FALSE)
+  geom_smooth(method = "lm", se = FALSE)
 ```
 
-`method=lm` tells it how to fit a line to the data; "lm" means fit a linear model with the `lm` function.  `se = FALSE` means to not display the standard errors on the plot.
+`method = lm` tells ggplot how to fit a line to the data; "lm" means fit a linear model with the `lm` function.  `se = FALSE` means to not display the standard errors on the plot.
 
-Note that the smoothing was done by group.  Specifying `color` effectively grouped our data, much like what happens with `group_by` in dplyr.
-
+Note that the smoothing was done by group. Specifying `color` effectively grouped our data, much like what happens with `group_by` in dplyr. How amazing is that?
 
 ### EXERCISE 3
 
-Repeat the same plot as above, `bill_length_mm` vs. `bill_depth_mm`, but `color` by `body_mass_g` instead of `species`.
+Repeat the same plot as above, `bill_length_mm` vs. `bill_depth_mm`, but `color` by `body_mass_g` instead of `species`. You can code here:
 
 ```{r}
 
@@ -338,9 +336,37 @@ We're happy to help you use ggplot on your own data.  Request a free consultatio
 
 ### Exercise 1
 
+```{r, eval=FALSE}
+ggplot(nh, aes(x = year, y = temp)) + 
+  geom_line()
+```
+
 ### Exercise 2
 
+```{r, eval=FALSE}
+ggplot(nh) +
+  geom_histogram(aes(temp), bins = 6)
+```
+
 ### Exercise 3
+
+```{r}
+ggplot(penguins, aes(x = bill_length_mm, 
+                     y = bill_depth_mm,
+                     color = body_mass_g)) +  
+  geom_point() + 
+  geom_smooth(method = "lm", se = FALSE)
+```
+
+Weird? Check out what type of variables they are:
+
+```{r}
+class(penguins$species)
+```
+
+```{r}
+class(penguins$body_mass_g)
+```
 
 ### Exercise 4
 

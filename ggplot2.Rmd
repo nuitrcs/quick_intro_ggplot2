@@ -227,14 +227,12 @@ To change the axes min and max values, like we would with `xlim` or `ylim` in ba
 ggplot(penguins, aes(x = bill_length_mm, 
                      y = bill_depth_mm)) +  
   geom_point() + 
-  scale_x_continuous(limits=c(30, 50))
+  scale_x_continuous(limits = c(30, 50))
 ```
-
-
 
 ## Facets
 
-In addition to using color, fill, linetype, etc. to denote groups, we can also make a separate plot for each group, where the plots are aligned and share axes.  These are called facets:
+In addition to using color, fill, linetype, etc. to denote groups, we can also make a separate plot for each group, where the plots are aligned and share axes. These are called facets:
 
 ```{r}
 ggplot(penguins, aes(flipper_length_mm)) + 
@@ -242,7 +240,7 @@ ggplot(penguins, aes(flipper_length_mm)) +
   facet_grid(sex ~ .)
 ```
 
-The facet function syntax is using the formula syntax used elsewhere in R, but it can be tough to remember.  It's on the cheat sheet though so you can look it up.  There are other options for laying out plots horizontally or in a grid.  
+The facet function syntax is using the formula syntax used elsewhere in R, but it can be tough to remember. It's on the cheat sheet though so you can look it up. There are other options for laying out plots horizontally or in a grid.  
 
 Note that the plots share an x-axis, and the y-axis has the same range in each plot.
 
@@ -280,16 +278,16 @@ ggplot(penguins, aes(body_mass_g)) +
         panel.grid.minor.x = element_blank())
 ```
 
-Many theme elements are controlled by setting options in additional `element` functions:
+Many [theme elements](https://ggplot2.tidyverse.org/reference/element.html) are controlled by setting options in additional `element` functions:
 
-* `element_blank()` - omit the element
-* `element_text()` 
-* `element_line()`
-* `element_rect()`
+* `element_blank()` - draws nothing, and assigns no space
+* `element_text()` - text
+* `element_line()` - lines
+* `element_rect()` - borders and backgrounds
 
-These are options that you will generally google for how to do: "ggplot remove gridlines", "ggplot change font size", etc.
+These are options that you will generally Google for how to do: "ggplot remove gridlines", "ggplot change font size", etc.
 
-In addition to themes, you can control some aspects of the data-driven elements of the plot directly, without using a variable to define them.  For example with color or size, if we specify them outside of a call to `aes()` within the geom function:
+In addition to themes, you can control some aspects of the data-driven elements of the plot directly, without using a variable to define them. For example with color or size, if we specify them outside of a call to `aes()` within the geom function:
 
 ```{r}
 ggplot(penguins, aes(x = bill_length_mm, 
@@ -313,7 +311,7 @@ ggplot(penguins, aes(body_mass_g)) +
 
 ## Pipes
 
-We use `+`, not `%>%`, to join together components of our ggplot.  But we can still pipe the results of other commands into ggplot - I just didn't above because we were just plotting the data frame as it is.  For example, to plot only the Adelie penguins:
+We use `+`, not `%>%`, to join together components of our ggplot.  But we can still pipe the results of other commands into ggplot (the code above didn't do it because we were just plotting the data frame as it is).  For example, to plot only the Adelie penguins:
 
 ```{r}
 penguins %>%
@@ -323,6 +321,10 @@ penguins %>%
 ```
 
 # Recap
+
+This notebook provided a quick introduction to ggplot. Besides some of the basics, the notebook covered different plot types, aesthetics and grouping, labels/titles, axis limits, facets, styling, and pipes.
+
+As previously mentioned, now that you learned the basics, it'd be good to go back and learn some more about the theory behind ggplot. You can also play around to get a feel for it. Have fun!
 
 # Learn More
 
@@ -370,6 +372,31 @@ class(penguins$body_mass_g)
 
 ### Exercise 4
 
+```{r}
+ggplot(penguins, aes(x = flipper_length_mm, 
+                     y = body_mass_g,
+                     color = sex)) +  
+  geom_point() +
+  labs(title = "Flipper Length Against Body Mass",
+       y = "Body mass (g)", 
+       x = "Fliper length (mm)",
+       color = "Sex")
+```
+
 ### Exercise 5
 
+```{r, eval=FALSE}
+ggplot(penguins, aes(x = body_mass_g)) + 
+  geom_histogram(bins = 8) + 
+  facet_grid(species ~ .)
+```
+
 ### Exercise 6
+
+```{r, eval=FALSE}
+ggplot(penguins, aes(body_mass_g)) + 
+  geom_histogram(bins = 30, fill = "darkgreen") + 
+  theme_minimal() + 
+  theme(panel.grid.major.x = element_blank(),  
+        panel.grid.minor.x = element_blank())
+```
